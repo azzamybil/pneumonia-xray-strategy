@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategi Peningkatan Klasifikasi Pneumonia X-Ray</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-arrow {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flow-arrow::after {
+            content: '▼';
+            font-size: 2rem;
+            color: #0A9396;
+        }
+        .flow-arrow-horizontal {
+            position: relative;
+            width: 40px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flow-arrow-horizontal::after {
+            content: '►';
+            font-size: 2rem;
+            color: #0A9396;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#005F73] mb-2">Strategi Multi-Cabang untuk Klasifikasi Pneumonia</h1>
+            <p class="text-lg md:text-xl text-[#0A9396]">Meningkatkan Akurasi Diagnostik pada Radiografi Dada Melalui AI Tingkat Lanjut</p>
+        </header>
+
+        <main>
+            <section id="problem" class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-[#005F73] mb-8">Tantangan Diagnostik: Kelemahan Tersembunyi dalam Model Awal</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-[#005F73] mb-4">Perbandingan Kinerja F1-Score per Kelas</h3>
+                        <p class="text-gray-600 mb-4">Meskipun skor keseluruhan tampak tinggi, model DenseNet121 menunjukkan kelemahan signifikan dalam membedakan antara subtipe pneumonia. Kinerjanya sangat baik pada kelas yang jelas berbeda seperti Tuberkulosis dan Normal, namun menurun drastis pada pneumonia Bakterial dan Viral.</p>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-[#005F73] mb-4">Analisis Matriks Kebingungan</h3>
+                        <p class="text-gray-600 mb-4">Analisis mendalam menunjukkan tingkat kebingungan yang tinggi dan simetris antara pneumonia Viral dan Bakterial. Model sering salah mengklasifikasikan satu subtipe sebagai subtipe lainnya, yang mengindikasikan kegagalan dalam mempelajari fitur pembeda yang halus.</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="p-3 border-b-2 border-gray-200"></th>
+                                        <th class="p-3 border-b-2 border-gray-200 bg-gray-100 text-[#005F73] font-semibold">Prediksi: Viral</th>
+                                        <th class="p-3 border-b-2 border-gray-200 bg-gray-100 text-[#005F73] font-semibold">Prediksi: Bakterial</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-3 border-b border-gray-200 bg-gray-100 text-[#005F73] font-semibold">Aktual: Viral</td>
+                                        <td class="p-3 border border-gray-200 bg-[#94D2BD] font-bold text-2xl">281</td>
+                                        <td class="p-3 border border-gray-200 bg-[#EE9B00] font-bold text-2xl">82</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 border-b border-gray-200 bg-gray-100 text-[#005F73] font-semibold">Aktual: Bakterial</td>
+                                        <td class="p-3 border border-gray-200 bg-[#E9D8A6] font-bold text-2xl">77</td>
+                                        <td class="p-3 border border-gray-200 bg-[#94D2BD] font-bold text-2xl">299</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                         <p class="text-sm text-gray-500 mt-4">Angka menunjukkan jumlah kasus. Warna oranye menyoroti kesalahan klasifikasi yang signifikan.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="solutions" class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-[#005F73] mb-8">Alur Kerja Terpadu untuk Kinerja Maksimal</h2>
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Untuk mengatasi tantangan ini, kami mengusulkan alur kerja sinergis yang menggabungkan penyempurnaan data dan arsitektur tingkat lanjut. Setiap langkah membangun di atas yang sebelumnya untuk memaksimalkan akurasi.</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col items-center text-center p-4 rounded-lg bg-blue-50 border border-blue-200 w-full md:w-1/4">
+                            <div class="text-4xl mb-2">1</div>
+                            <h4 class="font-bold text-[#005F73]">Prapemrosesan</h4>
+                            <p class="text-sm text-gray-600">Menerapkan CLAHE untuk meningkatkan kontras gambar dan menonjolkan fitur patologis.</p>
+                        </div>
+                        <div class="hidden md:flex flow-arrow-horizontal"></div>
+                        <div class="flex md:hidden flow-arrow"></div>
+                        <div class="flex flex-col items-center text-center p-4 rounded-lg bg-teal-50 border border-teal-200 w-full md:w-1/4">
+                            <div class="text-4xl mb-2">2</div>
+                            <h4 class="font-bold text-[#005F73]">Segmentasi Paru-paru</h4>
+                            <p class="text-sm text-gray-600">Menggunakan model U-Net untuk mengisolasi paru-paru, menghilangkan noise dari area non-relevan.</p>
+                        </div>
+                        <div class="hidden md:flex flow-arrow-horizontal"></div>
+                        <div class="flex md:hidden flow-arrow"></div>
+                        <div class="flex flex-col items-center text-center p-4 rounded-lg bg-yellow-50 border border-yellow-200 w-full md:w-1/4">
+                            <div class="text-4xl mb-2">3</div>
+                            <h4 class="font-bold text-[#005F73]">Augmentasi GAN</h4>
+                            <p class="text-sm text-gray-600">Menghasilkan gambar paru-paru sintetis yang realistis untuk memperkaya keragaman data.</p>
+                        </div>
+                        <div class="hidden md:flex flow-arrow-horizontal"></div>
+                        <div class="flex md:hidden flow-arrow"></div>
+                        <div class="flex flex-col items-center text-center p-4 rounded-lg bg-orange-50 border border-orange-200 w-full md:w-1/4">
+                            <div class="text-4xl mb-2">4</div>
+                            <h4 class="font-bold text-[#005F73]">Klasifikasi Ensemble</h4>
+                            <p class="text-sm text-gray-600">Menggabungkan prediksi dari beberapa model untuk keputusan akhir yang lebih kuat dan akurat.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="architecture" class="mb-16">
+                 <h2 class="text-3xl font-bold text-center text-[#005F73] mb-8">Pergeseran Paradigma: Dari End-to-End ke Segmentasi-Klasifikasi</h2>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                     <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-[#005F73] mb-4">Pendekatan Tradisional (End-to-End)</h3>
+                        <p class="text-gray-600 mb-4">Model tunggal memproses seluruh gambar, memaksanya untuk secara bersamaan menemukan paru-paru dan mengklasifikasikan penyakit. Ini rentan terhadap 'kebisingan' dari tulang rusuk, jantung, dan artefak lain, yang mengganggu kemampuan model untuk fokus pada sinyal penyakit yang halus.</p>
+                        <div class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-red-300 rounded-lg bg-red-50">
+                            <div class="text-lg font-semibold text-red-800">Seluruh Citra CXR</div>
+                            <div class="flow-arrow text-red-500"></div>
+                            <div class="text-lg font-semibold text-red-800 p-3 bg-red-100 rounded-md">DenseNet121</div>
+                            <div class="flow-arrow text-red-500"></div>
+                            <div class="text-lg font-semibold text-red-800">Prediksi Kelas</div>
+                        </div>
+                     </div>
+                      <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-[#0A9396] mb-4">Pendekatan yang Direkomendasikan (Dua Tahap)</h3>
+                        <p class="text-gray-600 mb-4">Dengan mengisolasi paru-paru terlebih dahulu menggunakan model U-Net, kita menyajikan data yang 'bersih' ke pengklasifikasi. Ini memaksa model untuk fokus hanya pada wilayah yang relevan, secara dramatis meningkatkan kemampuannya untuk membedakan antara subtipe pneumonia yang mirip.</p>
+                         <div class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-green-300 rounded-lg bg-green-50">
+                            <div class="text-lg font-semibold text-green-800">Seluruh Citra CXR</div>
+                            <div class="flow-arrow text-green-500"></div>
+                            <div class="text-lg font-semibold text-green-800 p-3 bg-green-100 rounded-md">U-Net (Segmentasi)</div>
+                            <div class="flow-arrow text-green-500"></div>
+                             <div class="text-lg font-semibold text-green-800">Hanya Paru-paru</div>
+                             <div class="flow-arrow text-green-500"></div>
+                             <div class="text-lg font-semibold text-green-800 p-3 bg-green-100 rounded-md">DenseNet121</div>
+                            <div class="flow-arrow text-green-500"></div>
+                             <div class="text-lg font-semibold text-green-800">Prediksi Akurat</div>
+                        </div>
+                     </div>
+                 </div>
+            </section>
+            
+            <section id="roadmap" class="mb-16">
+                 <h2 class="text-3xl font-bold text-center text-[#005F73] mb-8">Rencana Aksi Implementasi Bertahap</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-8 border-[#0A9396]">
+                        <h3 class="text-2xl font-bold text-[#0A9396]">Fase 1: Dampak Tertinggi</h3>
+                        <p class="mt-2 text-gray-600">Implementasikan alur kerja dua tahap **Segmentasi-Klasifikasi**. Ini adalah perubahan paling krusial yang akan memberikan peningkatan terbesar dengan mengatasi masalah variabel pengganggu.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-8 border-[#EE9B00]">
+                        <h3 class="text-2xl font-bold text-[#EE9B00]">Fase 2: Penyempurnaan Data</h3>
+                        <p class="mt-2 text-gray-600">Terapkan **augmentasi berbasis GAN** pada gambar paru-paru yang telah disegmentasi. Ini akan meningkatkan keragaman data, membantu model menggeneralisasi kasus yang sulit.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border-l-8 border-[#AE2012]">
+                        <h3 class="text-2xl font-bold text-[#AE2012]">Fase 3: Kinerja Puncak</h3>
+                        <p class="mt-2 text-gray-600">Bangun **ensemble model** (Stacking Generalization) untuk menggabungkan kekuatan arsitektur yang berbeda, mendorong akurasi dan kekokohan ke tingkat canggih.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-12 pt-8 border-t border-gray-300">
+            <p class="text-gray-500">Infografis ini merangkum strategi untuk meningkatkan akurasi klasifikasi pneumonia menggunakan teknik AI canggih, berdasarkan analisis sistematis.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        const performanceData = {
+            labels: [
+                wrapLabel('Tuberkulosis', 16),
+                wrapLabel('Normal', 16),
+                wrapLabel('Pneumonia Bakterial', 16),
+                wrapLabel('Pneumonia Viral', 16),
+            ],
+            datasets: [{
+                label: 'F1-Score',
+                data: [0.97, 0.93, 0.78, 0.73],
+                backgroundColor: [
+                    '#0A9396',
+                    '#94D2BD',
+                    '#EE9B00',
+                    '#CA6702'
+                ],
+                borderColor: [
+                    '#005F73',
+                    '#0A9396',
+                    '#CA6702',
+                    '#BB3E03'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const performanceConfig = {
+            type: 'bar',
+            data: performanceData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 1.0,
+                         grid: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'F1-Score per Kelas',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        color: '#333'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const performanceChartCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(performanceChartCtx, performanceConfig);
+    </script>
+</body>
+</html>
